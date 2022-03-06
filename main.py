@@ -29,7 +29,9 @@ data = pd.read_csv('demodata.csv')
 with st.spinner('Loading the details...,'):
     time.sleep(1)
 
-st.markdown("<h1 style='text-align: center; color: white;'>My Demo App</h1>", unsafe_allow_html=True)
+
+st.markdown("<h1 style='text-align: center;'>Demo App - Buysupply Interview</h1>", unsafe_allow_html=True)
+st.text('This is some text.')
 
 st.sidebar.title("Welcome to MyDashboard")
 select = st.sidebar.selectbox("Navigation Menu", ("Resume", "Weather details","Data Table view", "Data Charts view"), key='1')
@@ -49,7 +51,7 @@ if select == 'Resume':
 
 if select == 'Weather details':
     st.title("Weather details")
-    st.info('Here we use openweathermap API to get the weather details')
+    st.subheader('Here we use openweathermap API to get the weather details')
     form = st.form(key='my_form')
     location = form.text_input(label='Enter Location',value='Chennai')
     submit_button = form.form_submit_button(label='Submit')
@@ -96,6 +98,7 @@ if select == 'Data Table view':
 
     st.subheader("This is a dataframe view")
     st.dataframe(df.style.highlight_max(color='green', axis=0))
+    st.caption("We have highlighted max value")
 
 if select == 'Data Charts view':
     st.title("Data Charts view")
