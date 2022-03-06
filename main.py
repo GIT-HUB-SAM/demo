@@ -34,7 +34,7 @@ st.markdown("<h1 style='text-align: center;'>Demo App - Buysupply Interview</h1>
 st.text('This is some text.')
 
 st.sidebar.title("Welcome to MyDashboard")
-select = st.sidebar.selectbox("Navigation Menu", ("Resume", "Weather details","Data Table view", "Data Charts view"), key='1')
+select = st.sidebar.selectbox("Navigation Menu", ("Resume", "Weather details","Data Table view", "Data Charts view","Demo Dashboard","Other Details"), key='1')
 
 if select == 'Resume':
     st.title("My Resume")
@@ -90,7 +90,7 @@ if select == 'Weather details':
 
 if select == 'Data Table view':
     st.title("Data Table view")
-    st.info('Here we are going to view the demo data in Table format')
+    st.error('Here we are going to view the demo data in Table format')
 
     df = pd.DataFrame(data)
     st.subheader("This is a table view")
@@ -102,7 +102,7 @@ if select == 'Data Table view':
 
 if select == 'Data Charts view':
     st.title("Data Charts view")
-    st.info('Here we have plotted some charts with demo data')
+    st.warning('Here we have plotted some charts with demo data')
 
     chart_data1 = pd.DataFrame(data, columns=["Region", "UnitsSold"])
     chart_data1 = chart_data1.groupby('Region')[['UnitsSold']].sum()
@@ -123,3 +123,10 @@ if select == 'Data Charts view':
 
     st.line_chart(chart_data4,use_container_width = True)
 
+if select == 'Demo Dashboard':
+    st.title("Demo Dashboard")
+    st.info('Here we are seeing Dashboard with demo data')
+
+if select == 'Other Details':
+    st.title("Other Details for Interview Process")
+    st.info('I have included this part for Interview Process')
