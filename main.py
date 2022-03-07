@@ -1,5 +1,8 @@
 import streamlit as st
 import plotly.figure_factory as ff
+import plotly.express as px
+import matplotlib.pyplot as plt
+from bokeh.plotting import figure
 
 import pandas as pd
 import numpy as np
@@ -9,6 +12,9 @@ import base64
 import time
 import requests
 from pprint import pprint
+
+import panel as pn
+pn.extension()
 
 st.set_page_config(
      page_title="My Demo App",
@@ -122,11 +128,84 @@ if select == 'Data Charts view':
     chart_data4 = chart_data4.groupby('ItemType')[["TotalProfit"]].sum()
 
     st.line_chart(chart_data4,use_container_width = True)
-
 if select == 'Demo Dashboard':
     st.title("Demo Dashboard")
     st.info('Here we are seeing Dashboard with demo data')
 
+    st.subheader("Interactive Data with filter condition")
+
+    num = st.number_input('Order and Shipping date filter', step=1)
+    data['datadiff'] = (pd.to_datetime(data['ShipDate'], format='%m/%d/%Y') - pd.to_datetime(data['OrderDate'], format='%m/%d/%Y')).dt.days
+
+    data_order = data[data['datadiff'] <= num]
+    data_order = pd.DataFrame(data_order, columns=["ItemType","OrderID","OrderDate","ShipDate","datadiff"])
+
+    st.caption("The below data is filtered by above condition")
+    st.write(data)
+
+    col1, col2,col3 = st.columns([4,3,2])
+    with col1:
+        st.write(data_order.sort_values(by='datadiff', ascending=False))
+
+    with col2:
+        fig, ax = plt.subplots()
+        ax.hist(data_order['datadiff'])
+        st.pyplot(fig)
+
+    with col3:
+        st.write(data_order["ItemType"].value_counts())
+        # st.write(data.groupby(["ItemType"])['id'].count())
+
+    st.subheader("Cards View")
+    col1, col2 = st.columns([5,5])
+    with col1:
+        st.markdown("## **Item level analysis**")
+        selectItem1 = st.selectbox('Select a Item', data['ItemType'], key= 1)
+        selectItem2 = st.selectbox('Select a Item', data['ItemType'], key= 2)
+
+        data_itemtype = data[data['ItemType'] == selectItem1]
+        data_itemtype2 = data[data['ItemType'] == selectItem2]
+
+        data_itemtype = data_itemtype.groupby('ItemType').mean()
+        data_itemtype2 = data_itemtype2.groupby('ItemType').mean()
+
+        data_itemtype = data_itemtype[["UnitCost", "TotalCost", "TotalRevenue", "TotalProfit"]]
+        data_itemtype2 = data_itemtype2[["UnitCost", "TotalCost", "TotalRevenue", "TotalProfit"]]
+
+        df = pd.concat([data_itemtype,data_itemtype2])
+        st.write(df)
+        st.area_chart(df)
+
+    with col2:
+        st.markdown("## **Country level analysis**")
+        select = st.selectbox('Select a Country', data['Country'])
+
+        select_data = data[data['Country'] == select]
+
+        def get_total_dataframe(dataset):
+            total_dataframe = pd.DataFrame({
+                'Status': ['TotalProfit', 'TotalRevenue'],
+                'Number of sales': (dataset.iloc[0]['TotalProfit'],
+                                    dataset.iloc[0]['TotalRevenue'])})
+            return total_dataframe
+
+
+        select_total = get_total_dataframe(select_data)
+
+        st.markdown("### Total Sales in the %s is" % (select))
+        if not st.checkbox('Hide Graph', False, key=1):
+            state_total_graph = px.bar(
+                select_total,
+                x='Status',
+                y='Number of sales',
+                labels={'Number of sales': 'total sales in %s' % (select)  },
+                color='Status')
+            st.plotly_chart(state_total_graph)
+
+
 if select == 'Other Details':
     st.title("Other Details for Interview Process")
     st.info('I have included this part for Interview Process')
+
+    st.markdown('Streamlit is **_really_ cool**.')
+
