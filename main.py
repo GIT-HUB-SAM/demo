@@ -40,7 +40,7 @@ with st.spinner('Loading the details...,'):
 
 st.markdown("<h1 style='text-align: center;'>Demo App - Buysupply Interview</h1>", unsafe_allow_html=True)
 
-st.markdown('<P style="text-align:justify;font-size:larger";><b>I built this application to demonstrate my skills in developing. This application is built in Streamlit framework. '
+st.markdown('<P style="text-align:justify;font-size:larger";><b>I built this application to demonstrate my skills in application developing. This application is built in Streamlit framework. '
             'Streamlit is an open-source app framework for Machine Learning and Data Science teams. It is pure Python framework, I have knowlege is other frameworks such as - '
             'Django and Flask. I have knowledge in handling API and Big Data, we can see the below application as example for such cases. Lets Go through one by one in Navigcation Menu...,'
             '</b></p>', unsafe_allow_html=True)
@@ -100,15 +100,15 @@ if select == 'Weather details':
                 '<thead>'
                 '<tr>'
                 '<th scope="col" class="col-md-2 info"><h4> Today Weather in '+ str(weather_data["name"])  + ' ' + systxt["country"] +'</h4></th>'
-                '<th scope="col" class="col-md-2 success"><h4> Today Min temp  '+ str(weather_data["visibility"]) +'</h4></th>'
-                '<th scope="col" class="col-md-2 danger"><h4> Today Max temp '+ str(windtxt["speed"]) +'</h4></th>'
+                '<th scope="col" class="col-md-2 success"><h4> Today Min temp </h4></th>'
+                '<th scope="col" class="col-md-2 danger"><h4> Today Max temp </h4></th>'
                 '</tr>'
                 '</thead>'
                 '<tbody>'
                 '<tr>'
-                '<th scope="row" class ="info"><h1>'+ str(maintxt["temp"]) +'<h1></th>'
-                '<th scope="row" class ="success"><h1>'+ str(maintxt["temp_min"]) +'<h1></th>'
-                '<th scope="row" class ="danger"><h1>'+ str(maintxt["temp_max"]) +'<h1></th>'                    
+                '<th scope="row" class ="info"><h1>'+ str(maintxt["temp"]) +' °C<h1></th>'
+                '<th scope="row" class ="success"><h1>'+ str(maintxt["temp_min"]) +' °C<h1></th>'
+                '<th scope="row" class ="danger"><h1>'+ str(maintxt["temp_max"]) +' °C<h1></th>'                    
                 '</tr>''</tbody>'
                 '</table>',unsafe_allow_html=True)
 
@@ -209,6 +209,7 @@ if select == 'Demo Dashboard':
         select = st.selectbox('Select a Country', data['Country'])
 
         select_data = data[data['Country'] == select]
+        select_data = select_data.groupby('Country').mean()
 
         def get_total_dataframe(dataset):
             total_dataframe = pd.DataFrame({
@@ -306,6 +307,7 @@ if select == 'Other Details':
                 "<h3>Q: List out your PC/Laptop configuration & internet connection details </br>"
                 "A: Processor : i5 10th gen</br>"
                 "&nbsp; &nbsp; &nbsp;Memory : 32GB RAM / 500GB SSD</br>"
-                "&nbsp; &nbsp; &nbsp;OS : Windows 10 64 bit</h3>",unsafe_allow_html=True)
+                "&nbsp; &nbsp; &nbsp;OS : Windows 10 64 bit</br>"
+                "&nbsp; &nbsp; &nbsp;Internet Speed : 50 Mbps Upload and Download</h3>",unsafe_allow_html=True)
 
 
