@@ -1,2 +1,2 @@
 # demo
-demo repo
+demo application created for BuySupply, Inc interview process
